@@ -531,7 +531,7 @@ Step 2: Create Freestyle Project (e.g., MavenJava_Build)
 └── Configure the project:
            ​​├── Description: "Java Build demo"
            ​​├── Source Code Management:
-           ​​​└── Git repository URL: [GitMavenJava repo URL]
+           ​​​└── Git repository URL: [GitMavenJava repo URL]  https://github.com/sabavathsriram/foodOrdering.git
            ​​├── Branches to build: */Main   or  */master
  ​​└── Build Steps:
               ​     ├── Add Build Step -> "Invoke top-level Maven targets"
