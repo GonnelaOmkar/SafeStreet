@@ -473,6 +473,12 @@ COPY app.py /app
 RUN pip install flask
 CMD ["python", "app.py"]
 
+
+next to convert from .txt to Dockerfile:
+-----------------------------------------
+ren Dockerfile.txt Dockerfile
+
+
 Step 4 – Create docker-compose.yml
 ----------------------------------
 notepad docker-compose.yml
