@@ -1,3 +1,81 @@
+Here are analogous steps for setting up a **Node.js app with MongoDB** using Docker Compose. This example runs a Node.js application (assuming your app is ready) and a MongoDB database together.
+
+---
+
+**PART 2 – Node.js + MongoDB using docker-compose**
+===================================================
+
+### Step 1 – Create folder and compose file
+
+```plaintext
+cd C:\Users\NekshaSrinivas\SE-1
+mkdir nodemongo
+cd nodemongo
+notepad docker-compose.yml
+```
+
+Paste inside `docker-compose.yml`:
+```yaml
+services:
+  nodeapp:
+    image: node:latest
+    container_name: nodeapp
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    command: ["npm", "start"]    # assumes you have a package.json with a start script
+    ports:
+      - "3000:3000"
+    environment:
+      MONGO_URL: mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: mydatabase
+```
+
+> **Note:**  
+> - Replace `npm start` with your actual start command if different.  
+> - Make sure your **Node.js app** connects to MongoDB using the `MONGO_URL` env variable (example: `process.env.MONGO_URL`).  
+> - Your app code should be in the same folder as the compose file, or change the `volumes` path accordingly.
+
+---
+
+### Step 2 – Start Node.js + MongoDB stack
+
+```plaintext
+docker-compose up -d
+```
+
+---
+
+### Step 3 – Open Node.js app
+
+Go to  
+```
+http://localhost:3000
+```
+(or whatever port your app listens on).
+
+- Use your app’s frontend, API docs, or whatever you’ve configured.
+- Test MongoDB connection in your app code by creating/fetching data.
+
+---
+
+**Summary of Steps:**
+1. Create a folder and a docker-compose config.
+2. Paste Node.js + MongoDB service definitions.
+3. Launch everything via docker-compose.
+4. Use your browser/API tool to check if your Node.js app is running and talks to MongoDB.
+
+If you need a sample Node.js app with MongoDB connection code or help with `package.json`, let me know!
+
 CREATION OF MAVEN JAVA PROJECT
 
 Step 1. Open Eclipse IDE
