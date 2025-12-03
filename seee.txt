@@ -595,7 +595,7 @@ MAVEN WEB AUTOMATION
         └── Configure the project:
             ├── Description: "Web Build demo"
             ├── Source Code Management:
-            		└── Git repository URL: [GitMavenWeb repo URL]
+            		└── Git repository URL: [GitMavenWeb repo URL] https://github.com/manisai28/maven_web_app
             ├── Branches to build: */Main or master
             └── Build Steps:
                 ├── Add Build Step -> "Invoke top-level Maven targets"
