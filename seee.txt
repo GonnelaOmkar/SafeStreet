@@ -1,3 +1,184 @@
+Absolutely! Here’s a **complete beginner’s guide** to set up a Node.js app with MongoDB using Docker Compose, starting **from scratch** (including sample Node.js app code that connects to MongoDB).
+
+---
+
+## PART 2 – Node.js + MongoDB in Docker Compose (FROM SCRATCH)
+
+### **Step 1: Create Project Folder**
+
+Open your terminal and run:
+
+```plaintext
+cd C:\Users\NekshaSrinivas\SE-1
+mkdir nodemongo
+cd nodemongo
+```
+
+---
+
+### **Step 2: Create `docker-compose.yml`**
+
+Open Notepad (or your favorite editor) and create a file called `docker-compose.yml` inside your `nodemongo` folder.  
+Paste this inside:
+
+```yaml
+services:
+  nodeapp:
+    build: .
+    container_name: nodeapp
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    command: ["npm", "start"]
+    ports:
+      - "3000:3000"
+    environment:
+      MONGO_URL: mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: mydatabase
+```
+
+**Note:**  
+- This uses `build: .` for Node.js, so we’ll add a `Dockerfile` next.
+- Your Node.js app and this YAML file should be in the same folder!
+
+---
+
+### **Step 3: Add Sample Node.js App**
+
+**a. Create a minimal Node.js app:**
+
+Create a file called `app.js` in the same `nodemongo` folder:
+
+```javascript name=app.js
+const express = require('express');
+const { MongoClient } = require('mongodb');
+
+const app = express();
+const port = 3000;
+
+const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/mydatabase';
+
+app.get('/', async (req, res) => {
+  try {
+    const client = await MongoClient.connect(mongoUrl, { useUnifiedTopology: true });
+    const db = client.db('mydatabase');
+    // Insert a document
+    await db.collection('test').insertOne({ message: 'Hello from Node + Mongo!' });
+    // Read back
+    const doc = await db.collection('test').findOne({});
+    client.close();
+    res.send(`MongoDB says: ${doc.message}`);
+  } catch (err) {
+    res.status(500).send('MongoDB connection failed: ' + err.message);
+  }
+});
+
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`);
+});
+```
+
+**b. Create `package.json`**  
+Open Notepad and create `package.json`:
+
+```json name=package.json
+{
+  "name": "nodemongo-app",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.4",
+    "mongodb": "^4.15.0"
+  }
+}
+```
+
+---
+
+### **Step 4: Create a `Dockerfile` for Node.js**
+
+Create a file named `Dockerfile` in the same folder:
+
+```dockerfile name=Dockerfile
+FROM node:latest
+
+WORKDIR /usr/src/app
+
+COPY package.json ./
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "start"]
+```
+
+---
+
+### **Step 5: Start Everything Up!**
+
+Open the terminal in your `nodemongo` folder and run:
+
+```plaintext
+docker-compose up -d
+```
+
+---
+
+### **Step 6: Test Your Node.js App**
+
+- Open your browser and visit:  
+  http://localhost:3000
+
+You should see a message from MongoDB – meaning Node.js connects successfully!
+
+---
+
+## **Summary of Steps:**
+1. Create a project folder.
+2. Write `docker-compose.yml` and `Dockerfile`.
+3. Add a sample Node.js app (`app.js` and `package.json`).
+4. Start everything with `docker-compose up -d`.
+5. Visit `http://localhost:3000` and verify it works!
+
+**If you need authentication, extra config, or want to see more advanced code, just ask!**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Here are analogous steps for setting up a **Node.js app with MongoDB** using Docker Compose. This example runs a Node.js application (assuming your app is ready) and a MongoDB database together.
 
 ---
